@@ -1,4 +1,10 @@
 {
+<<<<<<< HEAD:keyboards/mechwild/mokulua/info.json
+    "build": {
+        "lto": true
+    }
+}
+=======
     "manufacturer": "Wendy Chen",
     "keyboard_name": "dasbob",
     "maintainer": "Wendy Chen",
@@ -66,3 +72,4 @@
         }
     }
 }
+>>>>>>> a504ba64d2 (Removing extra keyboards and adding in dasbob keyboard.):keyboards/dasbob/info.json
