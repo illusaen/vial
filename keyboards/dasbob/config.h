@@ -6,6 +6,8 @@
 #define MATRIX_ROWS 8
 #define MATRIX_COLS 5
 
+#define DYNAMIC_KEYMAP_LAYER_COUNT 5
+
 #define DIRECT_PINS { \
     { GP13, GP28, GP12, GP29, GP0 }, \
     { GP22, GP14, GP26, GP4,  GP27}, \

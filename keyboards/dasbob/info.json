@@ -19,7 +19,16 @@
         "wpm": true,
         "rgblight": false,
         "backlight": false,
-        "audio": true
+        "audio": true,
+        "combo": true,
+        "tapdance": false
+    },
+    "split": {
+        "enabled": true
+    },
+    "caps_word": {
+        "enabled": true,
+        "invert_on_shift": true
     },
     "build": {
         "lto": true
