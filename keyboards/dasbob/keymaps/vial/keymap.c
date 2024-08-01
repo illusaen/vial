@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
-#include "oneshot.h"
-#include "swapper.h"
-#include "select_word.h"
+#include "features/oneshot.h"
+#include "features/swapper.h"
+#include "features/select_word.h"
 
 #define LA_SYM MO(SYM)
 #define LA_NAV MO(NAV)

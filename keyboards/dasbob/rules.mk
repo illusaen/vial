@@ -5,6 +5,6 @@ AUDIO_DRIVER = pwm_hardware
 TAP_DANCE_ENABLE = no
 KEY_OVERRIDE_ENABLE = no
 
-SRC += oneshot.c
-SRC += swapper.c
-SRC += select_word.c
+SRC += features/oneshot.c
+SRC += features/swapper.c
+SRC += features/select_word.c
