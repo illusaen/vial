@@ -7,3 +7,4 @@ KEY_OVERRIDE_ENABLE = no
 
 SRC += oneshot.c
 SRC += swapper.c
+SRC += select_word.c

@@ -78,6 +78,11 @@
             "name": "Run",
             "title": "Run launcher",
             "shortName": "RUN"
+        },
+        {
+            "name": "Select word",
+            "title": "Select word or line",
+            "shortName": "SELWORD"
         }
     ],
     "matrix": {

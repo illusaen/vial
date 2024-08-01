@@ -4,6 +4,7 @@
 #include QMK_KEYBOARD_H
 #include "oneshot.h"
 #include "swapper.h"
+#include "select_word.h"
 
 #define LA_SYM MO(SYM)
 #define LA_NAV MO(NAV)
@@ -38,6 +39,7 @@ enum keycodes {
     UNDO,
     REDO,
     RUN,
+    SELWORD,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -58,7 +60,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [NAV] = LAYOUT_split_3x5_3(
         KC_ESC,  CUT,     COPY,    PASTE,   KC_TAB,       S(KC_TAB), KC_HOME, KC_UP,   KC_END,  KC_DEL,
         OS_SHFT, OS_CTRL, OS_ALT,  OS_CMD,  RUN,          CAPS_WD,   KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,
-        XXXXXXX, XXXXXXX, XXXXXXX, SW_WIN,  UNDO,         REDO,      KC_PGDN, XXXXXXX, KC_PGUP, XXXXXXX,
+        SELWORD, XXXXXXX, XXXXXXX, SW_WIN,  UNDO,         REDO,      KC_PGDN, XXXXXXX, KC_PGUP, XXXXXXX,
                             _______, _______, _______,  _______, _______, _______
     ),
 
@@ -125,7 +127,7 @@ oneshot_state os_cmd_state = os_up_unqueued;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uint16_t cmdish = active_operating_system == MAC ? KC_LGUI : KC_LALT;
-    uint16_t cmdOrCtrl = active_operating_system == MAC;
+    uint16_t is_mac = active_operating_system == MAC;
     update_swapper(
         &sw_win_active, cmdish, KC_TAB, SW_WIN,
         keycode, record
@@ -171,35 +173,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return 0;
         case CUT:
             if (record->event.pressed) {
-                SEND_STRING(cmdOrCtrl ? SS_LGUI("x") : SS_LCTL("x"));
+                SEND_STRING(is_mac ? SS_LGUI("x") : SS_LCTL("x"));
             }
             return 0;
         case COPY:
             if (record->event.pressed) {
-                SEND_STRING(cmdOrCtrl ? SS_LGUI("c") : SS_LCTL("c"));
+                SEND_STRING(is_mac ? SS_LGUI("c") : SS_LCTL("c"));
             }
             return 0;
         case PASTE:
             if (record->event.pressed) {
-                SEND_STRING(cmdOrCtrl ? SS_LGUI("v") : SS_LCTL("v"));
+                SEND_STRING(is_mac ? SS_LGUI("v") : SS_LCTL("v"));
             }
             return 0;
         case UNDO:
             if (record->event.pressed) {
-                SEND_STRING(cmdOrCtrl ? SS_LGUI("z") : SS_LCTL("z"));
+                SEND_STRING(is_mac ? SS_LGUI("z") : SS_LCTL("z"));
             }
             return 0;
         case REDO:
             if (record->event.pressed) {
-                SEND_STRING(cmdOrCtrl ? SS_LGUI(SS_LSFT("z")) : SS_LCTL(SS_LSFT("z")));
+                SEND_STRING(is_mac ? SS_LGUI(SS_LSFT("z")) : SS_LCTL(SS_LSFT("z")));
             }
             return 0;
         case RUN:
             if (record->event.pressed) {
-                SEND_STRING(cmdOrCtrl ? SS_LGUI(" ") : SS_LCTL(" "));
+                SEND_STRING(is_mac ? SS_LGUI(" ") : SS_LCTL(" "));
             }
             return 0;
     }
+
+    if (!process_select_word(keycode, record, SELWORD, is_mac)) { return false; }
+
     return true;
 }
 
@@ -209,7 +214,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 #ifdef OLED_ENABLE
 
-oled_rotation_t oled_init_user(oled_rotation_t rotation) { 
+oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     return !is_keyboard_master() ? OLED_ROTATION_0 : OLED_ROTATION_270;
 }
 
