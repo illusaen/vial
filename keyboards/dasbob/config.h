@@ -6,7 +6,7 @@
 #define MATRIX_ROWS 8
 #define MATRIX_COLS 5
 
-#define DYNAMIC_KEYMAP_LAYER_COUNT 5
+#define DYNAMIC_KEYMAP_LAYER_COUNT 6
 
 #define DIRECT_PINS { \
     { GP13, GP28, GP12, GP29, GP0 }, \
@@ -40,3 +40,6 @@
 #endif
 
 #define STARTUP_SOUND E__NOTE(_E6), E__NOTE(_A6), ED_NOTE(_E7),
+
+#define OLED_TIMEOUT 0
+#define OLED_SCROLL_TIMEOUT 150000

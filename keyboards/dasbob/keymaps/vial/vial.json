@@ -3,6 +3,83 @@
     "lighting": "none",
     "vendorId": "0xFEED",
     "productId": "0x0000",
+    "customKeycodes": [
+        {
+            "name": "OS Shift",
+            "title": "Oneshot Shift",
+            "shortName": "OS_SHFT"
+        },
+        {
+            "name": "OS Ctrl",
+            "title": "Oneshot Control",
+            "shortName": "OS_CTRL"
+        },
+        {
+            "name": "OS Alt",
+            "title": "Oneshot Alt",
+            "shortName": "OS_ALT"
+        },
+        {
+            "name": "OS Cmd",
+            "title": "Oneshot Cmd",
+            "shortName": "OS_CMD"
+        },
+        {
+            "name": "Swapper",
+            "title": "Swap window",
+            "shortName": "SW_WIN"
+        },
+        {
+            "name": "Caps Word",
+            "title": "Toggle Caps Word",
+            "shortName": "CAPS_WD"
+        },
+        {
+            "name": "OS Linux",
+            "title": "Toggle Caps Word",
+            "shortName": "OS_LINUX"
+        },
+        {
+            "name": "OS Mac",
+            "title": "Set OS to Mac",
+            "shortName": "OS_MAC"
+        },
+        {
+            "name": "OS Windows",
+            "title": "Set OS to Windows",
+            "shortName": "OS_WIN"
+        },
+        {
+            "name": "Cut",
+            "title": "Cut selected item",
+            "shortName": "CUT"
+        },
+        {
+            "name": "Copy",
+            "title": "Copy",
+            "shortName": "COPY"
+        },
+        {
+            "name": "Paste",
+            "title": "Paste",
+            "shortName": "PASTE"
+        },
+        {
+            "name": "Undo",
+            "title": "Undo",
+            "shortName": "UNDO"
+        },
+        {
+            "name": "Redo",
+            "title": "Redo",
+            "shortName": "REDO"
+        },
+        {
+            "name": "Run",
+            "title": "Run launcher",
+            "shortName": "RUN"
+        }
+    ],
     "matrix": {
         "rows": 8,
         "cols": 5
