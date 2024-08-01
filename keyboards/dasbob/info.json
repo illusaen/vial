@@ -26,10 +26,6 @@
     "split": {
         "enabled": true
     },
-    "caps_word": {
-        "enabled": true,
-        "invert_on_shift": true
-    },
     "build": {
         "lto": true
     },

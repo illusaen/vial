@@ -5,6 +5,7 @@
 #include "features/oneshot.h"
 #include "features/swapper.h"
 #include "features/select_word.h"
+#include "features/casemodes.h"
 
 #define LA_SYM MO(SYM)
 #define LA_NAV MO(NAV)
@@ -40,6 +41,7 @@ enum keycodes {
     REDO,
     RUN,
     SELWORD,
+    X_WORD,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -60,7 +62,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [NAV] = LAYOUT_split_3x5_3(
         KC_ESC,  CUT,     COPY,    PASTE,   KC_TAB,       S(KC_TAB), KC_HOME, KC_UP,   KC_END,  KC_DEL,
         OS_SHFT, OS_CTRL, OS_ALT,  OS_CMD,  RUN,          CAPS_WD,   KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,
-        SELWORD, XXXXXXX, XXXXXXX, SW_WIN,  UNDO,         REDO,      KC_PGDN, XXXXXXX, KC_PGUP, XXXXXXX,
+        SELWORD, XXXXXXX, X_WORD,  SW_WIN,  UNDO,         REDO,      KC_PGDN, XXXXXXX, KC_PGUP, XXXXXXX,
                             _______, _______, _______,  _______, _______, _______
     ),
 
@@ -108,6 +110,7 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     switch (keycode) {
     case LA_SYM:
     case LA_NAV:
+    case LA_NUM:
     case KC_LSFT:
     case OS_SHFT:
     case OS_CTRL:
@@ -117,6 +120,29 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     default:
         return false;
     }
+}
+
+bool terminate_case_modes(uint16_t keycode, const keyrecord_t *record) {
+        switch (keycode) {
+            // Keycodes to ignore (don't disable caps word)
+            case KC_A ... KC_Z:
+            case KC_1 ... KC_0:
+            case KC_MINS:
+            case KC_UNDS:
+            case KC_BSPC:
+            case CAPS_WD:
+                // If mod chording disable the mods
+                if (record->event.pressed && (get_mods() != 0)) {
+                    return true;
+                }
+                break;
+            default:
+                if (record->event.pressed) {
+                    return true;
+                }
+                break;
+        }
+        return false;
 }
 
 bool sw_win_active = false;
@@ -150,12 +176,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         keycode, record
     );
 
+    if (!process_select_word(keycode, record, SELWORD, is_mac)) { return false; }
+    if (!process_case_modes(keycode, record)) { return false; }
+
     switch (keycode) {
         case CAPS_WD:
             if (record->event.pressed) {
-                caps_word_toggle();
+                enable_caps_word();
             }
             return 0;
+        case X_WORD:
+            if (record->event.pressed) {
+                const uint8_t mods = get_mods();
+                if ((mods & MOD_MASK_SHIFT) != 0) {
+                    enable_xcase_with(OSM(MOD_RSFT));
+                    unregister_mods(MOD_MASK_SHIFT);
+                } else if ((mods & MOD_MASK_ALT) != 0) {
+                    enable_xcase_with(KC_MINS);
+                    unregister_mods(MOD_MASK_ALT);
+                } else if ((mods & MOD_MASK_GUI) != 0) {
+                    enable_xcase_with(KC_SLSH);
+                    unregister_mods(MOD_MASK_GUI);
+                } else {
+                    enable_xcase_with(KC_UNDS);
+                }
+            }
+            return false;
         case OS_LINUX:
             if (record->event.pressed) {
                 active_operating_system = LINUX;
@@ -203,8 +249,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return 0;
     }
 
-    if (!process_select_word(keycode, record, SELWORD, is_mac)) { return false; }
-
     return true;
 }
 
@@ -219,14 +263,6 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 
 static void oled_write_os_logo(void) {
-    // static const char PROGMEM mac_logo[] = {
-    //     149,150,10,
-    //     181,182,0
-    // };
-    // static const char PROGMEM windows_logo[] = {
-    //     151,152,10,
-    //     183,184,0
-    // };
     static const char PROGMEM linux_logo[] = {
         153,154,10,
         185,186,0
@@ -236,10 +272,10 @@ static void oled_write_os_logo(void) {
             oled_write_P(linux_logo, false);
             break;
         case MAC:
-            oled_write("MAC", false);
+            oled_write("MAC\n     ", false);
             break;
         case WIN:
-            oled_write("WIN", false);
+            oled_write("WIN\n     ", false);
             break;
     }
 }

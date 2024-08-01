@@ -8,3 +8,4 @@ KEY_OVERRIDE_ENABLE = no
 SRC += features/oneshot.c
 SRC += features/swapper.c
 SRC += features/select_word.c
+SRC += features/casemodes.c

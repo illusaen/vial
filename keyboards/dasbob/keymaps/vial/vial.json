@@ -83,6 +83,11 @@
             "name": "Select word",
             "title": "Select word or line",
             "shortName": "SELWORD"
+        },
+        {
+            "name": "Case mode",
+            "title": "Case mode toggle",
+            "shortName": "X_WORD"
         }
     ],
     "matrix": {
