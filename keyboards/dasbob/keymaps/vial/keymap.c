@@ -29,6 +29,7 @@ enum keycodes {
 
     SW_WIN, // Switch to next window         (cmd-tab)
     CAPS_WD,
+    NUM_WD,
 
     OS_LINUX,
     OS_MAC,
@@ -39,9 +40,17 @@ enum keycodes {
     PASTE,
     UNDO,
     REDO,
+    SAVE,
     RUN,
     SELWORD,
+    SELBWD,
     X_WORD,
+    LWORD,
+    RWORD,
+
+    ARROWFT,
+    ARROWTN,
+    DBLCOLN,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -49,27 +58,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,          KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
         KC_A,    KC_S,    KC_D,    KC_F,    KC_G,          KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,
         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,          KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_QUOT,
-                            LA_NUM,  KC_SPC, LA_NAV,    LA_SYM, KC_SPC, KC_BSPC
+                            KC_LSFT,  KC_SPC, LA_NAV,    LA_SYM, KC_SPC, KC_BSPC
     ),
 
     [COL] = LAYOUT_split_3x5_3(
         KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,         KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,
         KC_A,    KC_S,    KC_D,    KC_F,    KC_G,         KC_M,    KC_N,    KC_E,    KC_I,    KC_O,
         KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,         KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_SCLN,
-                            LA_NUM,  KC_SPC, LA_NAV,    LA_SYM, KC_SPC, KC_BSPC
+                            KC_LSFT,  KC_SPC, LA_NAV,    LA_SYM, KC_SPC, KC_BSPC
     ),
 
     [NAV] = LAYOUT_split_3x5_3(
         KC_ESC,  CUT,     COPY,    PASTE,   KC_TAB,       S(KC_TAB), KC_HOME, KC_UP,   KC_END,  KC_DEL,
-        OS_SHFT, OS_CTRL, OS_ALT,  OS_CMD,  RUN,          CAPS_WD,   KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,
-        SELWORD, XXXXXXX, X_WORD,  SW_WIN,  UNDO,         REDO,      KC_PGDN, XXXXXXX, KC_PGUP, XXXXXXX,
+        CAPS_WD, OS_SHFT, OS_CTRL, OS_CMD,  RUN,          XXXXXXX,   KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,
+        SAVE,    SELWORD, X_WORD,  SW_WIN,  UNDO,         REDO,      LWORD,   SELBWD,  RWORD,   XXXXXXX,
                             _______, _______, _______,  _______, _______, _______
     ),
 
     [SYM] = LAYOUT_split_3x5_3(
-        KC_ESC,  KC_LBRC, KC_LCBR, KC_LPRN, KC_TILD,      KC_CIRC, KC_RPRN, KC_RCBR, KC_RBRC, KC_GRV,
-        KC_MINS, KC_ASTR, KC_EQL,  KC_UNDS, KC_DLR,       KC_HASH, OS_CMD,  OS_ALT,  OS_CTRL, OS_SHFT,
-        KC_PLUS, KC_PIPE, KC_AT,   KC_SLSH, KC_PERC,      KC_BSPC, KC_BSLS, KC_AMPR, KC_QUES, KC_EXLM,
+        KC_TILD, KC_LBRC, KC_LCBR, KC_LPRN, KC_EXLM,      KC_AMPR, KC_RPRN, KC_RCBR, KC_RBRC, KC_GRV,
+        KC_MINS, KC_PIPE, KC_SLSH, KC_EQL,  KC_DLR,       KC_HASH, OS_CMD,  OS_CTRL, OS_SHFT, KC_COLN,
+        KC_BSLS, ARROWTN, ARROWFT, KC_UNDS, KC_QUES,      XXXXXXX, XXXXXXX, KC_LT,   KC_GT,   DBLCOLN,
                             _______, _______, _______,  _______, _______, _______
     ),
 
@@ -81,9 +90,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [MIS] = LAYOUT_split_3x5_3(
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,      XXXXXXX, DF(DEF),  DF(COL), XXXXXXX, XXXXXXX,
-        XXXXXXX, XXXXXXX, KC_VOLD, KC_VOLU, XXXXXXX,      XXXXXXX, OS_LINUX, OS_MAC,  OS_WIN,  XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,      XXXXXXX, CG_SWAP,  CG_NORM, XXXXXXX, XXXXXXX,
+        KC_1,    KC_2,    KC_3,    KC_4,    KC_5,      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
+        XXXXXXX, OS_SHFT, OS_CTRL, OS_CMD,  KC_EQL,    KC_DOT,  KC_PLUS, KC_MINS, KC_PAST, KC_SLSH,
+        CG_TOGG, OS_ALT,  OS_MAC,  OS_LINUX,OS_WIN,    KC_VOLD, KC_VOLU, KC_MUTE, XXXXXXX, KC_BSPC,
                             _______, _______, _______,  _______, _______, _______
     ),
 };
@@ -242,11 +251,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(is_mac ? SS_LGUI(SS_LSFT("z")) : SS_LCTL(SS_LSFT("z")));
             }
             return 0;
+        case SAVE:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI(SS_LSFT("s")) : SS_LCTL(SS_LSFT("s")));
+            }
+            return 0;
         case RUN:
             if (record->event.pressed) {
                 SEND_STRING(is_mac ? SS_LGUI(" ") : SS_LCTL(" "));
             }
             return 0;
+        case ARROWFT:
+            if (record->event.pressed) {
+                SEND_STRING("=>");
+            }
+            return false;
+        case ARROWTN:
+            if (record->event.pressed) {
+                SEND_STRING("->");
+            }
+            return false;
+        case DBLCOLN:
+            if (record->event.pressed) {
+                SEND_STRING("::");
+            }
+            return false;
     }
 
     return true;

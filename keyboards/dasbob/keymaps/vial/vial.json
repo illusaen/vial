@@ -7,47 +7,52 @@
         {
             "name": "OS Shift",
             "title": "Oneshot Shift",
-            "shortName": "OS_SHFT"
+            "shortName": "OSSHF"
         },
         {
             "name": "OS Ctrl",
             "title": "Oneshot Control",
-            "shortName": "OS_CTRL"
+            "shortName": "OSCTL"
         },
         {
             "name": "OS Alt",
             "title": "Oneshot Alt",
-            "shortName": "OS_ALT"
+            "shortName": "OSALT"
         },
         {
             "name": "OS Cmd",
             "title": "Oneshot Cmd",
-            "shortName": "OS_CMD"
+            "shortName": "OSCMD"
         },
         {
             "name": "Swapper",
             "title": "Swap window",
-            "shortName": "SW_WIN"
+            "shortName": "SWWIN"
         },
         {
             "name": "Caps Word",
             "title": "Toggle Caps Word",
-            "shortName": "CAPS_WD"
+            "shortName": "CAPWD"
+        },
+        {
+            "name": "Num Word",
+            "title": "Toggle Num Word",
+            "shortName": "NUMWD"
         },
         {
             "name": "OS Linux",
             "title": "Toggle Caps Word",
-            "shortName": "OS_LINUX"
+            "shortName": "LINUX"
         },
         {
             "name": "OS Mac",
             "title": "Set OS to Mac",
-            "shortName": "OS_MAC"
+            "shortName": "MAC"
         },
         {
             "name": "OS Windows",
             "title": "Set OS to Windows",
-            "shortName": "OS_WIN"
+            "shortName": "WIN"
         },
         {
             "name": "Cut",
@@ -75,6 +80,11 @@
             "shortName": "REDO"
         },
         {
+            "name": "Save",
+            "title": "Save",
+            "shortName": "SAVE"
+        },
+        {
             "name": "Run",
             "title": "Run launcher",
             "shortName": "RUN"
@@ -82,12 +92,42 @@
         {
             "name": "Select word",
             "title": "Select word or line",
-            "shortName": "SELWORD"
+            "shortName": "SELWD"
+        },
+        {
+            "name": "Select word to left",
+            "title": "Select word or line left or up",
+            "shortName": "SELBW"
         },
         {
             "name": "Case mode",
             "title": "Case mode toggle",
-            "shortName": "X_WORD"
+            "shortName": "XWORD"
+        },
+        {
+            "name": "Left word",
+            "title": "Move cursor a word to the left",
+            "shortName": "LWORD"
+        },
+        {
+            "name": "Right word",
+            "title": "Move cursor a word to the right",
+            "shortName": "RWORD"
+        },
+        {
+            "name": "Fat arrow",
+            "title": "Fat arrow",
+            "shortName": "=>"
+        },
+        {
+            "name": "Thin arrow",
+            "title": "Thin arrow",
+            "shortName": "->"
+        },
+        {
+            "name": "Double colon",
+            "title": "Double colon",
+            "shortName": "::"
         }
     ],
     "matrix": {

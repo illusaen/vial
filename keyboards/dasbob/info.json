@@ -19,9 +19,7 @@
         "wpm": true,
         "rgblight": false,
         "backlight": false,
-        "audio": true,
-        "combo": true,
-        "tapdance": false
+        "audio": true
     },
     "split": {
         "enabled": true
