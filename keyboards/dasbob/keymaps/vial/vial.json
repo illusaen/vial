@@ -7,112 +7,112 @@
         {
             "name": "OS Shift",
             "title": "Oneshot Shift",
-            "shortName": "OSSHF"
+            "shortName": "_shft"
         },
         {
             "name": "OS Ctrl",
             "title": "Oneshot Control",
-            "shortName": "OSCTL"
+            "shortName": "_ctrl"
         },
         {
             "name": "OS Alt",
             "title": "Oneshot Alt",
-            "shortName": "OSALT"
+            "shortName": "_alt"
         },
         {
             "name": "OS Cmd",
             "title": "Oneshot Cmd",
-            "shortName": "OSCMD"
+            "shortName": "_cmd"
         },
         {
             "name": "Swapper",
             "title": "Swap window",
-            "shortName": "SWWIN"
+            "shortName": "_swap"
         },
         {
             "name": "Caps Word",
             "title": "Toggle Caps Word",
-            "shortName": "CAPWD"
+            "shortName": "_caps"
         },
         {
             "name": "Num Word",
             "title": "Toggle Num Word",
-            "shortName": "NUMWD"
+            "shortName": "_nums"
         },
         {
             "name": "OS Linux",
             "title": "Toggle Caps Word",
-            "shortName": "LINUX"
+            "shortName": "_linx"
         },
         {
             "name": "OS Mac",
             "title": "Set OS to Mac",
-            "shortName": "MAC"
+            "shortName": "_mac"
         },
         {
             "name": "OS Windows",
             "title": "Set OS to Windows",
-            "shortName": "WIN"
+            "shortName": "_win"
         },
         {
             "name": "Cut",
             "title": "Cut selected item",
-            "shortName": "CUT"
+            "shortName": "_cut"
         },
         {
             "name": "Copy",
             "title": "Copy",
-            "shortName": "COPY"
+            "shortName": "_copy"
         },
         {
             "name": "Paste",
             "title": "Paste",
-            "shortName": "PASTE"
+            "shortName": "_pste"
         },
         {
             "name": "Undo",
             "title": "Undo",
-            "shortName": "UNDO"
+            "shortName": "_undo"
         },
         {
             "name": "Redo",
             "title": "Redo",
-            "shortName": "REDO"
+            "shortName": "_redo"
         },
         {
             "name": "Save",
             "title": "Save",
-            "shortName": "SAVE"
+            "shortName": "_save"
         },
         {
             "name": "Run",
             "title": "Run launcher",
-            "shortName": "RUN"
+            "shortName": "_run"
         },
         {
             "name": "Select word",
             "title": "Select word or line",
-            "shortName": "SELWD"
+            "shortName": "_slwd"
         },
         {
             "name": "Select word to left",
             "title": "Select word or line left or up",
-            "shortName": "SELBW"
+            "shortName": "_slwb"
         },
         {
             "name": "Case mode",
             "title": "Case mode toggle",
-            "shortName": "XWORD"
+            "shortName": "_xwrd"
         },
         {
             "name": "Left word",
             "title": "Move cursor a word to the left",
-            "shortName": "LWORD"
+            "shortName": "_wlft"
         },
         {
             "name": "Right word",
             "title": "Move cursor a word to the right",
-            "shortName": "RWORD"
+            "shortName": "_wrgt"
         },
         {
             "name": "Fat arrow",
@@ -128,6 +128,11 @@
             "name": "Double colon",
             "title": "Double colon",
             "shortName": "::"
+        },
+        {
+            "name": "Comment",
+            "title": "comment out block",
+            "shortName": "_cmnt"
         }
     ],
     "matrix": {

@@ -16,8 +16,7 @@ enum layers {
     COL,
     NAV,
     SYM,
-    NUM,
-    MIS
+    NUM
 };
 
 enum keycodes {
@@ -51,6 +50,7 @@ enum keycodes {
     ARROWFT,
     ARROWTN,
     DBLCOLN,
+    COMMENT,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -69,9 +69,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [NAV] = LAYOUT_split_3x5_3(
-        KC_ESC,  CUT,     COPY,    PASTE,   KC_TAB,       S(KC_TAB), KC_HOME, KC_UP,   KC_END,  KC_DEL,
-        CAPS_WD, OS_SHFT, OS_CTRL, OS_CMD,  RUN,          XXXXXXX,   KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,
-        SAVE,    SELWORD, X_WORD,  SW_WIN,  UNDO,         REDO,      LWORD,   SELBWD,  RWORD,   XXXXXXX,
+        KC_ESC,  X_WORD,  SELWORD, NUM_WD, KC_TAB,       S(KC_TAB), KC_HOME, KC_UP,   KC_END,  KC_DEL,
+        CAPS_WD, OS_SHFT, OS_CTRL, OS_CMD, RUN,          SW_WIN,    KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,
+        SAVE,    CUT,     COPY,    PASTE,  UNDO,         REDO,      LWORD,   SELBWD,  RWORD,   COMMENT,
                             _______, _______, _______,  _______, _______, _______
     ),
 
@@ -83,16 +83,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [NUM] = LAYOUT_split_3x5_3(
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,      KC_DOT,  KC_1,    KC_2,    KC_3,    KC_DEL,
-        OS_SHFT, OS_CTRL, OS_ALT,  OS_CMD,  XXXXXXX,      KC_EQL,  KC_4,    KC_5,    KC_6,    KC_0,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,      KC_SLSH, KC_7,    KC_8,    KC_9,    KC_MINS,
-                            _______, _______, _______,  _______, _______, _______
-    ),
-
-    [MIS] = LAYOUT_split_3x5_3(
-        KC_1,    KC_2,    KC_3,    KC_4,    KC_5,      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-        XXXXXXX, OS_SHFT, OS_CTRL, OS_CMD,  KC_EQL,    KC_DOT,  KC_PLUS, KC_MINS, KC_PAST, KC_SLSH,
-        CG_TOGG, OS_ALT,  OS_MAC,  OS_LINUX,OS_WIN,    KC_VOLD, KC_VOLU, KC_MUTE, XXXXXXX, KC_BSPC,
+        KC_1,    KC_2,    KC_3,    KC_4,    KC_5,      KC_6,    KC_7,    KC_8,    KC_9,     KC_0,
+        OS_ALT,  OS_SHFT, OS_CTRL, OS_CMD,  RUN,       KC_DOT,  KC_PLUS, KC_MINS, KC_PAST,  KC_SLSH,
+        KC_MUTE, KC_VOLD, KC_VOLU, KC_EQL,  XXXXXXX,   XXXXXXX, CG_TOGG, OS_MAC,  OS_LINUX, KC_BSPC,
                             _______, _______, _______,  _______, _______, _______
     ),
 };
@@ -261,6 +254,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(is_mac ? SS_LGUI(" ") : SS_LCTL(" "));
             }
             return 0;
+        case COMMENT:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI("/") : SS_LCTL("/"));
+            }
+            return 0;
+        case LWORD:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI(SS_TAP(X_LEFT)) : SS_LCTL(SS_TAP(X_LEFT)));
+            }
+            return 0;
+        case RWORD:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI(SS_TAP(X_RIGHT)) : SS_LCTL(SS_TAP(X_RIGHT)));
+            }
+            return 0;
         case ARROWFT:
             if (record->event.pressed) {
                 SEND_STRING("=>");
@@ -282,7 +290,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    return update_tri_layer_state(state, SYM, NAV, MIS);
+    return update_tri_layer_state(state, SYM, NAV, NUM);
 }
 
 #ifdef OLED_ENABLE
@@ -326,9 +334,6 @@ static void oled_write_layer(void) {
             break;
         case NUM:
             oled_write_ln_P(PSTR("NUM"), false);
-            break;
-        case MIS:
-            oled_write_ln_P(PSTR("MISC"), false);
             break;
         default:
             oled_write_ln_P(PSTR("??"), false);
