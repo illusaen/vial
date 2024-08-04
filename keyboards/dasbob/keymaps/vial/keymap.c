@@ -253,6 +253,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
+    if (is_num_word_enabled()) return state;
     return update_tri_layer_state(state, SYM, NAV, NUM);
 }
-
