@@ -153,14 +153,12 @@ oneshot_state os_ctrl_state = os_up_unqueued;
 oneshot_state os_alt_state = os_up_unqueued;
 oneshot_state os_cmd_state = os_up_unqueued;
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+void process_oneshots(uint16_t keycode, keyrecord_t *record) {
     uint16_t cmdish = active_operating_system == MAC ? KC_LGUI : KC_LALT;
-    uint16_t is_mac = active_operating_system == MAC;
     update_swapper(
         &sw_win_active, cmdish, KC_TAB, SW_WIN,
         keycode, record
     );
-
     update_oneshot(
         &os_shft_state, KC_LSFT, OS_SHFT,
         keycode, record
@@ -177,16 +175,116 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         &os_cmd_state, KC_LCMD, OS_CMD,
         keycode, record
     );
+}
 
-    if (!process_select_word(keycode, record, SELWORD, is_mac)) { return false; }
-    if (!process_case_modes(keycode, record)) { return false; }
+bool process_ctrl_shortcuts(uint16_t keycode, keyrecord_t *record) {
+    uint16_t is_mac = active_operating_system == MAC;
+    switch (keycode) {
+        case CUT:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI("x") : SS_LCTL("x"));
+            }
+            return false;
+        case COPY:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI("c") : SS_LCTL("c"));
+            }
+            return false;
+        case PASTE:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI("v") : SS_LCTL("v"));
+            }
+            return false;
+        case UNDO:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI("z") : SS_LCTL("z"));
+            }
+            return false;
+        case REDO:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI(SS_LSFT("z")) : SS_LCTL(SS_LSFT("z")));
+            }
+            return false;
+        case SAVE:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI(SS_LSFT("s")) : SS_LCTL(SS_LSFT("s")));
+            }
+            return false;
+        case RUN:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI(" ") : SS_LCTL(" "));
+            }
+            return false;
+        case COMMENT:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI("/") : SS_LCTL("/"));
+            }
+            return false;
+        case LWORD:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI(SS_TAP(X_LEFT)) : SS_LCTL(SS_TAP(X_LEFT)));
+            }
+            return false;
+        case RWORD:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI(SS_TAP(X_RIGHT)) : SS_LCTL(SS_TAP(X_RIGHT)));
+            }
+            return false;
+    }
+    return true;
+}
 
+bool process_expand_text_shortcuts(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case ARROWFT:
+            if (record->event.pressed) {
+                SEND_STRING("=>");
+            }
+            return false;
+        case ARROWTN:
+            if (record->event.pressed) {
+                SEND_STRING("->");
+            }
+            return false;
+        case DBLCOLN:
+            if (record->event.pressed) {
+                SEND_STRING("::");
+            }
+            return false;
+    }
+    return true;
+}
+
+bool process_set_operating_system(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case OS_LINUX:
+            if (record->event.pressed) {
+                active_operating_system = LINUX;
+            }
+            return false;
+        case OS_MAC:
+            if (record->event.pressed) {
+                active_operating_system = MAC;
+            }
+            return false;
+        case OS_WIN:
+            if (record->event.pressed) {
+                active_operating_system = WIN;
+            }
+            return false;
+
+    }
+
+    return true;
+}
+
+bool process_enable_case_modes(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case CAPS_WD:
             if (record->event.pressed) {
                 enable_caps_word();
             }
-            return 0;
+            return false;
         case X_WORD:
             if (record->event.pressed) {
                 const uint8_t mods = get_mods();
@@ -204,87 +302,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             return false;
-        case OS_LINUX:
-            if (record->event.pressed) {
-                active_operating_system = LINUX;
-            }
-            return 0;
-        case OS_MAC:
-            if (record->event.pressed) {
-                active_operating_system = MAC;
-            }
-            return 0;
-        case OS_WIN:
-            if (record->event.pressed) {
-                active_operating_system = WIN;
-            }
-            return 0;
-        case CUT:
-            if (record->event.pressed) {
-                SEND_STRING(is_mac ? SS_LGUI("x") : SS_LCTL("x"));
-            }
-            return 0;
-        case COPY:
-            if (record->event.pressed) {
-                SEND_STRING(is_mac ? SS_LGUI("c") : SS_LCTL("c"));
-            }
-            return 0;
-        case PASTE:
-            if (record->event.pressed) {
-                SEND_STRING(is_mac ? SS_LGUI("v") : SS_LCTL("v"));
-            }
-            return 0;
-        case UNDO:
-            if (record->event.pressed) {
-                SEND_STRING(is_mac ? SS_LGUI("z") : SS_LCTL("z"));
-            }
-            return 0;
-        case REDO:
-            if (record->event.pressed) {
-                SEND_STRING(is_mac ? SS_LGUI(SS_LSFT("z")) : SS_LCTL(SS_LSFT("z")));
-            }
-            return 0;
-        case SAVE:
-            if (record->event.pressed) {
-                SEND_STRING(is_mac ? SS_LGUI(SS_LSFT("s")) : SS_LCTL(SS_LSFT("s")));
-            }
-            return 0;
-        case RUN:
-            if (record->event.pressed) {
-                SEND_STRING(is_mac ? SS_LGUI(" ") : SS_LCTL(" "));
-            }
-            return 0;
-        case COMMENT:
-            if (record->event.pressed) {
-                SEND_STRING(is_mac ? SS_LGUI("/") : SS_LCTL("/"));
-            }
-            return 0;
-        case LWORD:
-            if (record->event.pressed) {
-                SEND_STRING(is_mac ? SS_LGUI(SS_TAP(X_LEFT)) : SS_LCTL(SS_TAP(X_LEFT)));
-            }
-            return 0;
-        case RWORD:
-            if (record->event.pressed) {
-                SEND_STRING(is_mac ? SS_LGUI(SS_TAP(X_RIGHT)) : SS_LCTL(SS_TAP(X_RIGHT)));
-            }
-            return 0;
-        case ARROWFT:
-            if (record->event.pressed) {
-                SEND_STRING("=>");
-            }
-            return false;
-        case ARROWTN:
-            if (record->event.pressed) {
-                SEND_STRING("->");
-            }
-            return false;
-        case DBLCOLN:
-            if (record->event.pressed) {
-                SEND_STRING("::");
-            }
-            return false;
     }
+    return true;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    // Activate/Deactivate oneshot keys and swap window hotkey - swapper.c, oneshot.c
+    // https://github.com/callum-oakley/qmk_firmware/tree/master/users/callum
+    process_oneshots(keycode, record);
+
+    // Select word or line - select_word.c
+    // https://github.com/getreuer/qmk-keymap/blob/main/features
+    if (!process_select_word(keycode, record, SELWORD, active_operating_system == MAC)) { return false; }
+
+    // Case modes, replacing space with various deliminators for paths/snake case/pascal case/etc - casemodes.c
+    // https://github.com/andrewjrae/kyria-keymap
+    if (!process_case_modes(keycode, record)) { return false; }
+    if (!process_enable_case_modes(keycode, record)) { return false; }
+
+    // Custom
+    if (!process_set_operating_system(keycode, record)) { return false; }
+    if (!process_ctrl_shortcuts(keycode, record)) { return false; }
+    if (!process_expand_text_shortcuts(keycode, record)) { return false; }
 
     return true;
 }
