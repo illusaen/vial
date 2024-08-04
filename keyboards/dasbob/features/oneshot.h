@@ -31,3 +31,5 @@ bool is_oneshot_cancel_key(uint16_t keycode);
 // change keys allows stacking multiple oneshot modifiers, and carrying them
 // between layers.
 bool is_oneshot_ignored_key(uint16_t keycode);
+
+void process_oneshots(uint16_t keycode, keyrecord_t *record);

@@ -1,6 +1,9 @@
 // Copyright 2023 QMK
 // SPDX-License-Identifier: GPL-2.0-or-later
 #include "swapper.h"
+#include "status.h"
+
+bool sw_win_active = false;
 
 void update_swapper(
     bool *active,
@@ -27,3 +30,10 @@ void update_swapper(
     }
 }
 
+void process_swapper(uint16_t keycode, keyrecord_t *record) {
+        uint16_t cmdish = is_operating_system_mac() ? KC_LGUI : KC_LALT;
+    update_swapper(
+        &sw_win_active, cmdish, KC_TAB, SW_WIN,
+        keycode, record
+    );
+}

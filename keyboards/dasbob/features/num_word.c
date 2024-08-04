@@ -3,7 +3,6 @@
 #include "num_word.h"
 #include "status.h"
 
-static uint16_t num_word_timer = 0;
 static bool is_num_word_on = false;
 
 bool is_num_word_enabled(void) {
@@ -67,32 +66,12 @@ bool should_terminate_num_word(uint16_t keycode, const keyrecord_t *record) {
 
 bool process_record_num_word(uint16_t keycode, const keyrecord_t *record) {
     // Handle the custom keycodes that go with this feature
-    if (keycode == NUM_WD) {
-        if (record->event.pressed) {
-            enable_num_word();
-            num_word_timer = timer_read();
-            return false;
-        }
-        else {
-            // if (timer_elapsed(num_word_timer) > TAPPING_TERM) {
-            //     // If the user held the key longer than TAPPING_TERM,
-            //     // consider it a hold, and disable the behavior on
-            //     // key release.
-            //     disable_num_word(layer);
-            //     return false;
-            // }
-        }
+    if (keycode == NUM_WD && record->event.pressed) {
+        enable_num_word();
+        return false;
     }
 
-    // Other than the custom keycodes, nothing else in this feature will
-    // activate if the behavior is not on, so allow QMK to handle the
-    // event as usual
-    if (!is_num_word_on) return true;
-
-    // Nothing else acts on key release, either
-    if (!record->event.pressed) {
-        return true;
-    }
+    if (!is_num_word_on || !record->event.pressed) return true;
 
     // Get the base keycode of a mod or layer tap key
     switch (keycode) {

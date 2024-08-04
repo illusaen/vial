@@ -99,36 +99,6 @@ bool terminate_case_modes(uint16_t keycode, const keyrecord_t *record) {
         return false;
 }
 
-bool sw_win_active = false;
-oneshot_state os_shft_state = os_up_unqueued;
-oneshot_state os_ctrl_state = os_up_unqueued;
-oneshot_state os_alt_state = os_up_unqueued;
-oneshot_state os_cmd_state = os_up_unqueued;
-
-void process_oneshots(uint16_t keycode, keyrecord_t *record) {
-    uint16_t cmdish = is_operating_system_mac() ? KC_LGUI : KC_LALT;
-    update_swapper(
-        &sw_win_active, cmdish, KC_TAB, SW_WIN,
-        keycode, record
-    );
-    update_oneshot(
-        &os_shft_state, KC_LSFT, OS_SHFT,
-        keycode, record
-    );
-    update_oneshot(
-        &os_ctrl_state, KC_LCTL, OS_CTRL,
-        keycode, record
-    );
-    update_oneshot(
-        &os_alt_state, KC_LALT, OS_ALT,
-        keycode, record
-    );
-    update_oneshot(
-        &os_cmd_state, KC_LCMD, OS_CMD,
-        keycode, record
-    );
-}
-
 bool process_ctrl_shortcuts(uint16_t keycode, keyrecord_t *record) {
     uint16_t is_mac = is_operating_system_mac();
     switch (keycode) {
@@ -234,6 +204,7 @@ bool process_enable_case_modes(uint16_t keycode, keyrecord_t *record) {
         case CAPS_WD:
             if (record->event.pressed) {
                 enable_caps_word();
+                enable_xcase_with(KC_UNDS);
             }
             return false;
         case X_WORD:
@@ -241,13 +212,10 @@ bool process_enable_case_modes(uint16_t keycode, keyrecord_t *record) {
                 const uint8_t mods = get_mods();
                 if ((mods & MOD_MASK_SHIFT) != 0) {
                     enable_xcase_with(OSM(MOD_RSFT));
-                    unregister_mods(MOD_MASK_SHIFT);
-                } else if ((mods & MOD_MASK_ALT) != 0) {
+                } else if ((mods & MOD_MASK_CTRL) != 0) {
                     enable_xcase_with(KC_MINS);
-                    unregister_mods(MOD_MASK_ALT);
                 } else if ((mods & MOD_MASK_GUI) != 0) {
                     enable_xcase_with(KC_SLSH);
-                    unregister_mods(MOD_MASK_GUI);
                 } else {
                     enable_xcase_with(KC_UNDS);
                 }
@@ -261,6 +229,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // Activate/Deactivate oneshot keys and swap window hotkey - swapper.c, oneshot.c
     // https://github.com/callum-oakley/qmk_firmware/tree/master/users/callum
     process_oneshots(keycode, record);
+    process_swapper(keycode, record);
 
     // Select word or line - select_word.c
     // https://github.com/getreuer/qmk-keymap/blob/main/features
