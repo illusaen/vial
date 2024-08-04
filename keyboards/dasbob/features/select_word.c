@@ -21,6 +21,7 @@
  */
 
 #include "select_word.h"
+#include "status.h"
 
 // clang-format off
 enum {
@@ -45,7 +46,7 @@ void select_word_task(void) {
 #endif  // SELECT_WORD_TIMEOUT > 0
 
 bool process_select_word(uint16_t keycode, keyrecord_t* record,
-                         uint16_t sel_keycode, bool is_mac) {
+                         uint16_t sel_keycode) {
   if (keycode == KC_LSFT || keycode == KC_RSFT) {
     return true;
   }
@@ -64,7 +65,7 @@ bool process_select_word(uint16_t keycode, keyrecord_t* record,
 #endif  // NO_ACTION_ONESHOT
 
     if (!shifted) {  // Select word.
-        if (is_mac) {
+        if (is_operating_system_mac()) {
             set_mods(MOD_BIT(KC_LALT));  // Hold Left Alt (Option).
         } else {
             set_mods(MOD_BIT(KC_LCTL));  // Hold Left Ctrl.
@@ -81,7 +82,7 @@ bool process_select_word(uint16_t keycode, keyrecord_t* record,
         state = STATE_WORD;
     } else {  // Select line.
         if (state == STATE_NONE) {
-            if (is_mac) {
+            if (is_operating_system_mac()) {
                 // Tap GUI (Command) + Left, then Shift + GUI + Right.
                 set_mods(MOD_BIT(KC_LGUI));
                 send_keyboard_report();
@@ -110,7 +111,7 @@ bool process_select_word(uint16_t keycode, keyrecord_t* record,
   switch (state) {
     case STATE_WORD:
       unregister_code(KC_RGHT);
-        if (is_mac) {
+        if (is_operating_system_mac()) {
             unregister_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_LALT));
         } else {
             unregister_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_LCTL));

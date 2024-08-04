@@ -41,7 +41,7 @@
 #define IS_OSM(keycode) (keycode >= QK_ONE_SHOT_MOD && keycode <= QK_ONE_SHOT_MOD_MAX)
 
 // bool to keep track of the caps word state
-static bool caps_word_on = false;
+static bool case_mode_caps_word_on = false;
 
 // enum to keep track of the xcase state
 static enum xcase_state xcase_state = XCASE_OFF;
@@ -52,12 +52,12 @@ static int8_t distance_to_last_delim = -1;
 
 // Check whether caps word is on
 bool caps_word_enabled(void) {
-    return caps_word_on;
+    return case_mode_caps_word_on;
 }
 
 // Enable caps word
 void enable_caps_word(void) {
-    caps_word_on = true;
+    case_mode_caps_word_on = true;
 #ifndef CAPSWORD_USE_SHIFT
     if (!host_keyboard_led_state().caps_lock) {
         tap_code(KC_CAPS);
@@ -67,7 +67,7 @@ void enable_caps_word(void) {
 
 // Disable caps word
 void disable_caps_word(void) {
-    caps_word_on = false;
+    case_mode_caps_word_on = false;
 #ifndef CAPSWORD_USE_SHIFT
     if (host_keyboard_led_state().caps_lock) {
         tap_code(KC_CAPS);
@@ -79,7 +79,7 @@ void disable_caps_word(void) {
 
 // Toggle caps word
 void toggle_caps_word(void) {
-    if (caps_word_on) {
+    if (case_mode_caps_word_on) {
         disable_caps_word();
     }
     else {
@@ -167,7 +167,7 @@ bool use_default_xcase_separator(uint16_t keycode, const keyrecord_t *record) {
 }
 
 bool process_case_modes(uint16_t keycode, const keyrecord_t *record) {
-    if (caps_word_on || xcase_state) {
+    if (case_mode_caps_word_on || xcase_state) {
         if ((QK_MOD_TAP <= keycode && keycode <= QK_MOD_TAP_MAX)
             || (QK_LAYER_TAP <= keycode && keycode <= QK_LAYER_TAP_MAX)) {
             // Earlier return if this has not been considered tapped yet
