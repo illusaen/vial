@@ -18,34 +18,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,          KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
         KC_A,    KC_S,    KC_D,    KC_F,    KC_G,          KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,
         KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,          KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_QUOT,
-                            KC_LSFT,  KC_SPC, LA_NAV,    LA_SYM, KC_SPC, KC_BSPC
+                            OS_SHFT,  KC_SPC, LA_NAV,    LA_SYM, KC_SPC, KC_BSPC
     ),
 
     [COL] = LAYOUT_split_3x5_3(
         KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,         KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,
         KC_A,    KC_S,    KC_D,    KC_F,    KC_G,         KC_M,    KC_N,    KC_E,    KC_I,    KC_O,
         KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,         KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_SCLN,
-                            KC_LSFT,  KC_SPC, LA_NAV,    LA_SYM, KC_SPC, KC_BSPC
+                            OS_SHFT,  KC_SPC, LA_NAV,    LA_SYM, KC_SPC, KC_BSPC
     ),
 
     [NAV] = LAYOUT_split_3x5_3(
-        KC_ESC,  X_WORD,  SELWORD, NUM_WD, KC_TAB,       S(KC_TAB), KC_HOME, KC_UP,   KC_END,  KC_DEL,
-        CAPS_WD, OS_SHFT, OS_CTRL, OS_CMD, XXXXXXX,      SW_WIN,    KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,
-        SAVE,    CUT,     COPY,    PASTE,  UNDO,         REDO,      LWORD,   SELBWD,  RWORD,   COMMENT,
+        KC_ESC,  X_WORD,  SELWORD, NUM_WD, KC_TAB,       XXXXXXX, LWORD,   KC_UP,   RWORD,   KC_DEL,
+        CAPS_WD, OS_SHFT, OS_CTRL, OS_CMD, ITERM,      SW_WIN,  KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,
+        SAVE,    CUT,     COPY,    PASTE,  UNDO,         REDO,    KC_HOME, SELBWD,  KC_END,  COMMENT,
                             _______, _______, _______,  _______, _______, _______
     ),
 
     [SYM] = LAYOUT_split_3x5_3(
         KC_TILD, KC_LBRC, KC_LCBR, KC_LPRN, KC_EXLM,      KC_AMPR, KC_RPRN, KC_RCBR, KC_RBRC, KC_GRV,
         KC_MINS, KC_PIPE, KC_SLSH, KC_EQL,  KC_DLR,       KC_HASH, OS_CMD,  OS_CTRL, OS_SHFT, KC_COLN,
-        KC_BSLS, ARROWTN, ARROWFT, KC_UNDS, KC_QUES,      XXXXXXX, XXXXXXX, KC_LT,   KC_GT,   DBLCOLN,
+        KC_BSLS, ARROWTN, ARROWFT, KC_UNDS, KC_QUES,      KC_PAST, XXXXXXX, KC_LT,   KC_GT,   DBLCOLN,
                             _______, _______, _______,  _______, _______, _______
     ),
 
     [NUM] = LAYOUT_split_3x5_3(
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,      KC_6,    KC_7,    KC_8,    KC_9,     KC_0,
         OS_ALT,  OS_SHFT, OS_CTRL, OS_CMD,  RUN,       KC_DOT,  KC_PLUS, KC_MINS, KC_PAST,  KC_SLSH,
-        KC_MUTE, KC_VOLD, KC_VOLU, KC_EQL,  XXXXXXX,   XXXXXXX, CG_TOGG, OS_MAC,  XXXXXXX, KC_BSPC,
+        KC_MUTE, KC_VOLD, KC_VOLU, KC_EQL,  XXXXXXX,   XXXXXXX, XXXXXXX, QK_BOOT, OS_MAC, KC_BSPC,
                             _______, _______, _______,  _______, _______, _______
     ),
 };
@@ -70,6 +70,9 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     case OS_CTRL:
     case OS_ALT:
     case OS_CMD:
+    // case SELWORD:
+    // case SELBWD:
+    case KC_TAB:
         return true;
     default:
         return false;
@@ -152,6 +155,10 @@ bool process_ctrl_shortcuts(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(is_mac ? SS_LALT(SS_TAP(X_RIGHT)) : SS_LCTL(SS_TAP(X_RIGHT)));
             }
             return false;
+        case ITERM:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LALT("~"));
+            }
     }
     return true;
 }
@@ -221,6 +228,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // Select word or line - select_word.c
     // https://github.com/getreuer/qmk-keymap/blob/main/features
     if (!process_select_word(keycode, record, SELWORD)) { return false; }
+    if (!process_select_word(keycode, record, SELBWD)) { return false; }
 
     // Case modes, replacing space with various deliminators for paths/snake case/pascal case/etc - casemodes.c
     // https://github.com/andrewjrae/kyria-keymap

@@ -45,6 +45,8 @@ enum keycodes {
     ARROWTN,
     DBLCOLN,
     COMMENT,
+
+    ITERM,
 };
 
 bool is_operating_system_mac(void);

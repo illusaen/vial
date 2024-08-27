@@ -123,6 +123,11 @@
             "name": "Comment",
             "title": "comment out block",
             "shortName": "_cmnt"
+        },
+        {
+            "name": "Iterm",
+            "title": "toggle iterm",
+            "shortName": "_itrm"
         }
     ],
     "matrix": {
