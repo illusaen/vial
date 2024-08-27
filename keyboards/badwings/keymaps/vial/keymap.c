@@ -37,8 +37,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [SYM] = LAYOUT_split_3x5_3(
         KC_TILD, KC_LBRC, KC_LCBR, KC_LPRN, KC_EXLM,      KC_AMPR, KC_RPRN, KC_RCBR, KC_RBRC, KC_GRV,
-        KC_MINS, KC_PIPE, KC_SLSH, KC_EQL,  KC_DLR,       KC_HASH, OS_CMD,  OS_CTRL, OS_SHFT, KC_COLN,
-        KC_BSLS, ARROWTN, ARROWFT, KC_UNDS, KC_QUES,      KC_PAST, XXXXXXX, KC_LT,   KC_GT,   DBLCOLN,
+        KC_MINS, KC_PIPE, KC_SLSH, KC_EQL,  KC_DLR,       KC_HASH, JS_STRF, OS_CTRL, OS_SHFT, KC_COLN,
+        KC_BSLS, ARROWTN, ARROWFT, KC_UNDS, KC_QUES,      KC_PAST, KC_AT,   KC_LT,   KC_GT,   DBLCOLN,
                             _______, _______, _______,  _______, _______, _______
     ),
 
@@ -180,6 +180,10 @@ bool process_expand_text_shortcuts(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING("::");
             }
             return false;
+        case JS_STRF:
+            if (record->event.pressed) {
+                SEND_STRING("`${}`" SS_TAP(X_LEFT) SS_TAP(X_LEFT));
+            }
     }
     return true;
 }

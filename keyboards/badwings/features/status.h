@@ -7,13 +7,7 @@ typedef enum {
     MAC,
 } operating_system;
 
-enum layers {
-    DEF,
-    COL,
-    NAV,
-    SYM,
-    NUM
-};
+enum layers { DEF, COL, NAV, SYM, NUM };
 
 enum keycodes {
     // Custom oneshot mod implementation with no timers.
@@ -44,6 +38,7 @@ enum keycodes {
     ARROWFT,
     ARROWTN,
     DBLCOLN,
+    JS_STRF,
     COMMENT,
 
     ITERM,

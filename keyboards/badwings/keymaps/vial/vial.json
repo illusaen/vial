@@ -120,6 +120,11 @@
             "shortName": "::"
         },
         {
+            "name": "templated literal",
+            "title": "Javascript templated literal",
+            "shortName": "`${}`"
+        },
+        {
             "name": "Comment",
             "title": "comment out block",
             "shortName": "_cmnt"
