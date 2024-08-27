@@ -30,22 +30,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [NAV] = LAYOUT_split_3x5_3(
         KC_ESC,  X_WORD,  SELWORD, NUM_WD, KC_TAB,       XXXXXXX, LWORD,   KC_UP,   RWORD,   KC_DEL,
-        CAPS_WD, OS_SHFT, OS_CTRL, OS_CMD, ITERM,      SW_WIN,  KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,
+        CAPS_WD, OS_SHFT, OS_CTRL, OS_CMD, ITERM,        SW_WIN,  KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,
         SAVE,    CUT,     COPY,    PASTE,  UNDO,         REDO,    KC_HOME, SELBWD,  KC_END,  COMMENT,
                             _______, _______, _______,  _______, _______, _______
     ),
 
     [SYM] = LAYOUT_split_3x5_3(
         KC_TILD, KC_LBRC, KC_LCBR, KC_LPRN, KC_EXLM,      KC_AMPR, KC_RPRN, KC_RCBR, KC_RBRC, KC_GRV,
-        KC_MINS, KC_PIPE, KC_SLSH, KC_EQL,  KC_DLR,       KC_HASH, JS_STRF, OS_CTRL, OS_SHFT, KC_COLN,
-        KC_BSLS, ARROWTN, ARROWFT, KC_UNDS, KC_QUES,      KC_PAST, KC_AT,   KC_LT,   KC_GT,   DBLCOLN,
+        KC_MINS, KC_PIPE, KC_SLSH, KC_EQL,  KC_DLR,       KC_HASH, JS_STRF, KC_MS_BTN1, KC_COLN, KC_ENT,
+        KC_BSLS, ARROWTN, ARROWFT, KC_UNDS, KC_QUES,      KC_PAST, KC_AT,   KC_LT,   KC_GT,   KC_BSPC,
                             _______, _______, _______,  _______, _______, _______
     ),
 
     [NUM] = LAYOUT_split_3x5_3(
-        KC_1,    KC_2,    KC_3,    KC_4,    KC_5,      KC_6,    KC_7,    KC_8,    KC_9,     KC_0,
-        OS_ALT,  OS_SHFT, OS_CTRL, OS_CMD,  RUN,       KC_DOT,  KC_PLUS, KC_MINS, KC_PAST,  KC_SLSH,
-        KC_MUTE, KC_VOLD, KC_VOLU, KC_EQL,  XXXXXXX,   XXXXXXX, XXXXXXX, QK_BOOT, OS_MAC, KC_BSPC,
+        KC_1,    KC_2,    KC_3,    KC_4,    KC_5,      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
+        OS_ALT,  OS_SHFT, OS_CTRL, OS_CMD,  RUN,       DBLCOLN, KC_PLUS, KC_PAST, KC_DOT,  KC_ENT,
+        OS_MAC,  QK_BOOT, KC_VOLD, KC_VOLU, KC_MUTE,   KC_EQL,  KC_MINS, KC_SLSH, XXXXXXX, KC_BSPC,
                             _______, _______, _______,  _______, _______, _______
     ),
 };

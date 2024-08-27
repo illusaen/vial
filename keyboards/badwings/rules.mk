@@ -4,7 +4,6 @@
 POINTING_DEVICE_DRIVER = cirque_pinnacle_spi
 POINTING_DEVICE_ENABLE  = yes
 LTO_ENABLE = yes
-CONSOLE_ENABLE = no
 EXTRAFLAGS += -flto
 
 SRC += features/status.c
