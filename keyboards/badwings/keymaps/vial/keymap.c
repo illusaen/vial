@@ -12,6 +12,10 @@
 #define LA_SYM MO(SYM)
 #define LA_NAV MO(NAV)
 #define LA_NUM MO(NUM)
+#define MS_BTNL KC_MS_BTN1
+#define MS_BTNR KC_MS_BTN2
+#define OS_MEH OSM(MOD_MEH)
+#define OS_HYPR OSM(MOD_HYPR)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [DEF] = LAYOUT_split_3x5_3(
@@ -29,77 +33,78 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [NAV] = LAYOUT_split_3x5_3(
-        KC_ESC,  X_WORD,  SELWORD, NUM_WD, KC_TAB,       XXXXXXX, LWORD,   KC_UP,   RWORD,   KC_DEL,
-        CAPS_WD, OS_SHFT, OS_CTRL, OS_CMD, ITERM,        SW_WIN,  KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,
-        SAVE,    CUT,     COPY,    PASTE,  UNDO,         REDO,    KC_HOME, SELBWD,  KC_END,  COMMENT,
+        KC_ESC,  X_WORD,  SELWORD, NUM_WD, KC_TAB,       SW_WIN,  LWORD,   KC_UP,   RWORD,   KC_DEL,
+        CAPS_WD, OS_SHFT, OS_CTRL, OS_CMD, OS_MEH,       OS_HYPR, KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,
+        SAVE,    CUT,     COPY,    PASTE,  UNDO,         REDO,    KC_HOME, QK_REP,  KC_END,  COMMENT,
                             _______, _______, _______,  _______, _______, _______
     ),
 
     [SYM] = LAYOUT_split_3x5_3(
-        KC_TILD, KC_LBRC, KC_LCBR, KC_LPRN, KC_EXLM,      KC_AMPR, KC_RPRN, KC_RCBR, KC_RBRC, KC_GRV,
-        KC_MINS, KC_PIPE, KC_SLSH, KC_EQL,  KC_DLR,       KC_HASH, JS_STRF, KC_MS_BTN1, KC_COLN, KC_ENT,
-        KC_BSLS, ARROWTN, ARROWFT, KC_UNDS, KC_QUES,      KC_PAST, KC_AT,   KC_LT,   KC_GT,   KC_BSPC,
-                            _______, _______, _______,  _______, _______, _______
-    ),
+        KC_TILD, KC_LBRC, KC_LCBR, KC_LPRN, KC_EXLM,     KC_AMPR, KC_RPRN, KC_RCBR, KC_RBRC, KC_GRV,
+        KC_MINS, KC_PIPE, KC_SLSH, KC_EQL,  KC_DLR,      KC_HASH, JS_ARFN, MS_BTNL, MS_BTNR, KC_COLN,
+        KC_BSLS, ARROWTN, ARROWFT, KC_UNDS, KC_QUES,     KC_PAST, KC_AT,   QK_AREP, JS_STRF, KC_BSPC,
+                            _______, _______, _______, _______, _______, _______),
 
     [NUM] = LAYOUT_split_3x5_3(
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-        OS_ALT,  OS_SHFT, OS_CTRL, OS_CMD,  RUN,       DBLCOLN, KC_PLUS, KC_PAST, KC_DOT,  KC_ENT,
-        OS_MAC,  QK_BOOT, KC_VOLD, KC_VOLU, KC_MUTE,   KC_EQL,  KC_MINS, KC_SLSH, XXXXXXX, KC_BSPC,
+        OS_ALT,  OS_SHFT, OS_CTRL, OS_CMD,  RUN,       ITERM,   KC_PLUS, KC_PAST, KC_DOT,  KC_ENT,
+        OS_MAC,  QK_BOOT, KC_VOLD, KC_VOLU, KC_MUTE,   KC_EQL,  KC_MINS, KC_SLSH, KC_SPC,  KC_BSPC,
                             _______, _______, _______,  _______, _______, _______
     ),
 };
 
 bool is_oneshot_cancel_key(uint16_t keycode) {
     switch (keycode) {
-    case LA_SYM:
-    case LA_NAV:
-        return true;
-    default:
-        return false;
+        case LA_SYM:
+        case LA_NAV:
+        case KC_MS_BTN1:
+        case KC_MS_BTN2:
+            return true;
+        default:
+            return false;
     }
 }
 
 bool is_oneshot_ignored_key(uint16_t keycode) {
     switch (keycode) {
-    case LA_SYM:
-    case LA_NAV:
-    case LA_NUM:
-    case KC_LSFT:
-    case OS_SHFT:
-    case OS_CTRL:
-    case OS_ALT:
-    case OS_CMD:
-    // case SELWORD:
-    // case SELBWD:
-    case KC_TAB:
-        return true;
-    default:
-        return false;
+        case LA_SYM:
+        case LA_NAV:
+        case LA_NUM:
+        case KC_LSFT:
+        case OS_SHFT:
+        case OS_CTRL:
+        case OS_ALT:
+        case OS_CMD:
+        // case SELWORD:
+        // case SELBWD:
+        case KC_TAB:
+            return true;
+        default:
+            return false;
     }
 }
 
 bool terminate_case_modes(uint16_t keycode, const keyrecord_t *record) {
-        switch (keycode) {
-            // Keycodes to ignore (don't disable caps word)
-            case KC_A ... KC_Z:
-            case KC_1 ... KC_0:
-            case KC_MINS:
-            case KC_UNDS:
-            case KC_BSPC:
-            case CAPS_WD:
-                // If mod chording disable the mods
-                if (record->event.pressed && (get_mods() != 0)) {
-                    return true;
-                }
-                break;
-            default:
-                if (record->event.pressed) {
-                    return true;
-                }
-                break;
-        }
-        return false;
+    switch (keycode) {
+        // Keycodes to ignore (don't disable caps word)
+        case KC_A ... KC_Z:
+        case KC_1 ... KC_0:
+        case KC_MINS:
+        case KC_UNDS:
+        case KC_BSPC:
+        case CAPS_WD:
+            // If mod chording disable the mods
+            if (record->event.pressed && (get_mods() != 0)) {
+                return true;
+            }
+            break;
+        default:
+            if (record->event.pressed) {
+                return true;
+            }
+            break;
+    }
+    return false;
 }
 
 bool process_ctrl_shortcuts(uint16_t keycode, keyrecord_t *record) {
@@ -184,6 +189,11 @@ bool process_expand_text_shortcuts(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 SEND_STRING("`${}`" SS_TAP(X_LEFT) SS_TAP(X_LEFT));
             }
+        case JS_ARFN:
+            if (record->event.pressed) {
+                SEND_STRING("= () => {");
+            }
+            return false;
     }
     return true;
 }
@@ -231,22 +241,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // Select word or line - select_word.c
     // https://github.com/getreuer/qmk-keymap/blob/main/features
-    if (!process_select_word(keycode, record, SELWORD)) { return false; }
-    if (!process_select_word(keycode, record, SELBWD)) { return false; }
+    if (!process_select_word(keycode, record, SELWORD)) {
+        return false;
+    }
+    if (!process_select_word(keycode, record, SELBWD)) {
+        return false;
+    }
 
     // Case modes, replacing space with various deliminators for paths/snake case/pascal case/etc - casemodes.c
     // https://github.com/andrewjrae/kyria-keymap
-    if (!process_case_modes(keycode, record)) { return false; }
-    if (!process_enable_case_modes(keycode, record)) { return false; }
+    if (!process_case_modes(keycode, record)) {
+        return false;
+    }
+    if (!process_enable_case_modes(keycode, record)) {
+        return false;
+    }
 
     // Num word - num_word.c, num_word.h
     // https://github.com/qmk/qmk_firmware/tree/906108fb486797ab2f3eb7c3a6f70e099c1199e6/users/replicaJunction
-    if (!process_record_num_word(keycode, record)) { return false; }
+    if (!process_record_num_word(keycode, record)) {
+        return false;
+    }
 
     // Custom
-    if (!process_set_operating_system(keycode, record)) { return false; }
-    if (!process_ctrl_shortcuts(keycode, record)) { return false; }
-    if (!process_expand_text_shortcuts(keycode, record)) { return false; }
+    if (!process_set_operating_system(keycode, record)) {
+        return false;
+    }
+    if (!process_ctrl_shortcuts(keycode, record)) {
+        return false;
+    }
+    if (!process_expand_text_shortcuts(keycode, record)) {
+        return false;
+    }
 
     return true;
 }

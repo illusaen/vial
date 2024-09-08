@@ -125,6 +125,11 @@
             "shortName": "`${}`"
         },
         {
+            "name": "Arrow function",
+            "title": "javascript arrow function",
+            "shortName": "= () => {"
+        },
+        {
             "name": "Comment",
             "title": "comment out block",
             "shortName": "_cmnt"

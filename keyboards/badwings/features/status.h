@@ -39,6 +39,7 @@ enum keycodes {
     ARROWTN,
     DBLCOLN,
     JS_STRF,
+    JS_ARFN,
     COMMENT,
 
     ITERM,

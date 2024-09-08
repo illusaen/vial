@@ -50,7 +50,7 @@ bool process_select_word(uint16_t keycode, keyrecord_t* record, uint16_t sel_key
         return true;
     }
 
-    bool reversed = sel_keycode == SELBWD;
+    bool reversed = false;
 
 #if SELECT_WORD_TIMEOUT > 0
     idle_timer = record->event.time + SELECT_WORD_TIMEOUT;
