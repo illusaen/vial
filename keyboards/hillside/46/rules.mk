@@ -1,12 +1,14 @@
-CONSOLE_ENABLE = no
-COMMAND_ENABLE = no
 MOUSEKEY_ENABLE = no
 SPACE_CADET_ENABLE = no
 GRAVE_ESC_ENABLE = no
 MAGIC_ENABLE = no
-SPLIT_KEYBOARD = yes        # Use shared split_common code
-LTO_ENABLE = yes            # Use link time optimization for smaller firmware
-QMK_SETTINGS = no
+ENCODER_MAP_ENABLE = yes
+MUSIC_ENABLE = no
+BLUETOOTH_ENABLE = no
+COMBO_ENABLE = no
 
-SRC += oneshot.c
-SRC += swapper.c
+SRC += features/oneshot.c
+SRC += features/num_word.c
+SRC += features/select_word.c
+SRC += features/status.c
+SRC += features/casemodes.c

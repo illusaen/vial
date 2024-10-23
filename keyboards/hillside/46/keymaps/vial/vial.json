@@ -3,6 +3,148 @@
     "rows": 8,
     "cols": 6
   },
+  "customKeycodes": [
+    {
+        "name": "OS Shift",
+        "title": "Oneshot Shift",
+        "shortName": "_shft"
+    },
+    {
+        "name": "OS Ctrl",
+        "title": "Oneshot Control",
+        "shortName": "_ctrl"
+    },
+    {
+        "name": "OS Alt",
+        "title": "Oneshot Alt",
+        "shortName": "_alt"
+    },
+    {
+        "name": "OS Cmd",
+        "title": "Oneshot Cmd",
+        "shortName": "_cmd"
+    },
+    {
+        "name": "Swapper",
+        "title": "Swap window",
+        "shortName": "_swap"
+    },
+    {
+        "name": "Caps Word",
+        "title": "Toggle Caps Word",
+        "shortName": "_caps"
+    },
+    {
+        "name": "Num Word",
+        "title": "Toggle Num Word",
+        "shortName": "_nums"
+    },
+    {
+        "name": "OS Mac",
+        "title": "Set OS to Mac",
+        "shortName": "_mac"
+    },
+    {
+        "name": "Cut",
+        "title": "Cut selected item",
+        "shortName": "_cut"
+    },
+    {
+        "name": "Copy",
+        "title": "Copy",
+        "shortName": "_copy"
+    },
+    {
+        "name": "Paste",
+        "title": "Paste",
+        "shortName": "_pste"
+    },
+    {
+        "name": "Undo",
+        "title": "Undo",
+        "shortName": "_undo"
+    },
+    {
+        "name": "Redo",
+        "title": "Redo",
+        "shortName": "_redo"
+    },
+    {
+        "name": "Save",
+        "title": "Save",
+        "shortName": "_save"
+    },
+    {
+        "name": "Select All",
+        "title": "Select all",
+        "shortName": "_selall"
+    },
+    {
+        "name": "Run",
+        "title": "Run launcher",
+        "shortName": "_run"
+    },
+    {
+        "name": "Select word",
+        "title": "Select word or line",
+        "shortName": "_slwd"
+    },
+    {
+        "name": "Select word to left",
+        "title": "Select word or line left or up",
+        "shortName": "_slwb"
+    },
+    {
+        "name": "Case mode",
+        "title": "Case mode toggle",
+        "shortName": "_xwrd"
+    },
+    {
+        "name": "Left word",
+        "title": "Move cursor a word to the left",
+        "shortName": "_wlft"
+    },
+    {
+        "name": "Right word",
+        "title": "Move cursor a word to the right",
+        "shortName": "_wrgt"
+    },
+    {
+        "name": "Fat arrow",
+        "title": "Fat arrow",
+        "shortName": "=>"
+    },
+    {
+        "name": "Thin arrow",
+        "title": "Thin arrow",
+        "shortName": "->"
+    },
+    {
+        "name": "Double colon",
+        "title": "Double colon",
+        "shortName": "::"
+    },
+    {
+        "name": "templated literal",
+        "title": "Javascript templated literal",
+        "shortName": "`${}`"
+    },
+    {
+        "name": "Arrow function",
+        "title": "javascript arrow function",
+        "shortName": "= () => {"
+    },
+    {
+        "name": "Comment",
+        "title": "comment out block",
+        "shortName": "_cmnt"
+    },
+    {
+        "name": "Iterm",
+        "title": "toggle iterm",
+        "shortName": "_itrm"
+    }
+  ],
   "layouts": {
     "keymap": [
   [

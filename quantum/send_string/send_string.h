@@ -124,6 +124,7 @@ void send_nibble(uint8_t number);
 void tap_random_base64(void);
 
 #if defined(__AVR__) || defined(__DOXYGEN__)
+# define PSTR(s) (__extension__({static const char __c[] PROGMEM = s; &__c[0];}))
 /**
  * \brief Type out a PROGMEM string of ASCII characters.
  *
