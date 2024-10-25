@@ -7,10 +7,13 @@
     "features": {
         "bootmagic": false,
         "command": false,
-        "console": true,
+        "console": false,
         "extrakey":  false,
-        "mousekey": true,
-        "nkro": true
+        "mousekey": false,
+        "nkro": false
+    },
+    "build": {
+        "lto": true
     },
     "debounce": 0,
     "matrix_pins": {
