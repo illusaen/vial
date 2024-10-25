@@ -70,12 +70,13 @@ void update_oneshot(
 }
 
 void process_oneshots(uint16_t keycode, keyrecord_t *record) {
+    uint16_t is_mac = is_operating_system_mac();
     update_oneshot(
         &os_shft_state, KC_LSFT, OS_SHFT,
         keycode, record
     );
     update_oneshot(
-        &os_ctrl_state, KC_LCTL, OS_CTRL,
+        &os_ctrl_state, is_mac ? KC_LCTL : KC_LCMD, OS_CTRL,
         keycode, record
     );
     update_oneshot(
@@ -83,7 +84,7 @@ void process_oneshots(uint16_t keycode, keyrecord_t *record) {
         keycode, record
     );
     update_oneshot(
-        &os_cmd_state, KC_LCMD, OS_CMD,
+        &os_cmd_state, is_mac ? KC_LCMD : KC_LCTL, OS_CMD,
         keycode, record
     );
 }

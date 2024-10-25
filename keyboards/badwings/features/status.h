@@ -35,6 +35,8 @@ enum keycodes {
     LWORD,
     RWORD,
 
+    SCRNSHT,
+    
     ARROWFT,
     ARROWTN,
     DBLCOLN,

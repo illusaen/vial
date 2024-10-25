@@ -105,6 +105,11 @@
             "shortName": "_wrgt"
         },
         {
+            "name": "Screenshot",
+            "title": "Screenshot",
+            "shortName": "_scrnst"
+        },
+        {
             "name": "Fat arrow",
             "title": "Fat arrow",
             "shortName": "=>"

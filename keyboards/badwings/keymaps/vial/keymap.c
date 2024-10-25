@@ -33,22 +33,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [NAV] = LAYOUT_split_3x5_3(
-        KC_ESC,  X_WORD,  SELWORD, NUM_WD, KC_TAB,       SW_WIN,  LWORD,   KC_UP,   RWORD,   KC_DEL,
-        CAPS_WD, OS_SHFT, OS_CTRL, OS_CMD, OS_MEH,       OS_HYPR, KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,
-        SAVE,    CUT,     COPY,    PASTE,  UNDO,         REDO,    KC_HOME, QK_REP,  KC_END,  COMMENT,
+        KC_ESC,  X_WORD,  SELWORD, NUM_WD, KC_TAB,       OS_HYPR, LWORD,   KC_UP,   RWORD,   KC_DEL,
+        CAPS_WD, OS_SHFT, OS_CTRL, OS_CMD, RUN,          ITERM,   KC_LEFT, KC_DOWN, KC_RGHT, KC_ENT,
+        SCRNSHT, CUT,     COPY,    PASTE,  UNDO,         REDO,    KC_PGUP, KC_BRK,  KC_PGDN, S(KC_PGDN),
                             _______, _______, _______,  _______, _______, _______
     ),
 
     [SYM] = LAYOUT_split_3x5_3(
         KC_TILD, KC_LBRC, KC_LCBR, KC_LPRN, KC_EXLM,     KC_AMPR, KC_RPRN, KC_RCBR, KC_RBRC, KC_GRV,
-        KC_MINS, KC_PIPE, KC_SLSH, KC_EQL,  KC_DLR,      KC_HASH, JS_ARFN, MS_BTNL, MS_BTNR, KC_COLN,
-        KC_BSLS, ARROWTN, ARROWFT, KC_UNDS, KC_QUES,     KC_PAST, KC_AT,   QK_AREP, JS_STRF, KC_BSPC,
+        KC_MINS, KC_PIPE, KC_SLSH, KC_EQL,  KC_DLR,      KC_HASH, JS_ARFN, COMMENT, JS_STRF, DBLCOLN,
+        KC_BSLS, ARROWTN, ARROWFT, KC_UNDS, KC_QUES,     KC_PAST, KC_AT,   KC_PLUS, XXXXXXX, KC_BSPC,
                             _______, _______, _______, _______, _______, _______),
 
     [NUM] = LAYOUT_split_3x5_3(
+        KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,     KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-        OS_ALT,  OS_SHFT, OS_CTRL, OS_CMD,  RUN,       ITERM,   KC_PLUS, KC_PAST, KC_DOT,  KC_ENT,
-        OS_MAC,  QK_BOOT, KC_VOLD, KC_VOLU, KC_MUTE,   KC_EQL,  KC_MINS, KC_SLSH, KC_SPC,  KC_BSPC,
+        OS_MAC,  KC_PAST, KC_SLSH, OS_SHFT, KC_F11,    KC_F12,  KC_MINS, KC_PLUS, KC_DOT,  QK_BOOT,
                             _______, _______, _______,  _______, _______, _______
     ),
 };
@@ -92,6 +92,7 @@ bool terminate_case_modes(uint16_t keycode, const keyrecord_t *record) {
         case KC_MINS:
         case KC_UNDS:
         case KC_BSPC:
+        case KC_SLSH:
         case CAPS_WD:
             // If mod chording disable the mods
             if (record->event.pressed && (get_mods() != 0)) {
@@ -164,7 +165,13 @@ bool process_ctrl_shortcuts(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 SEND_STRING(SS_LALT("~"));
             }
-    }
+            return false;
+        case SCRNSHT:
+            if (record->event.pressed) {
+                SEND_STRING(is_mac ? SS_LGUI(SS_LSFT("4")) : SS_LGUI(SS_LSFT("s")));
+            }
+            return false;
+        }
     return true;
 }
 
